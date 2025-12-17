@@ -1,5 +1,5 @@
 import "dotenv/config"; // MUST be the FIRST import before anything else
-import express from "express";
+import express, { application } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import helmet from "helmet";
@@ -8,6 +8,7 @@ import morgan from "morgan";
 /* route imports */
 import dashboardRoutes from "./routes/dashboardRoutes.ts";
 import productRoutes from "./routes/productRoutes.ts";
+import userRoutes from "./routes/userRoutes.ts";
 
 /* configurations */
 const app = express();
@@ -22,6 +23,7 @@ app.use(cors());
 /* routes */
 app.use("/dashboard", dashboardRoutes);
 app.use("/products", productRoutes);
+app.use("/users", userRoutes);
 
 /* server */
 const port = process.env.PORT || 3001;
