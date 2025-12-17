@@ -90,7 +90,7 @@ const CardSalesSummary = () => {
             <ResponsiveContainer width="100%" height={350} className="px-7">
               <BarChart
                 data={salesData}
-                margin={{ top: 0, right: 10, left: -50, bottom: 0 }}
+                margin={{ top: 0, right: 10, left: -50, bottom: 45 }}
               >
                 <CartesianGrid strokeDasharray="" vertical={false} />
                 <XAxis
