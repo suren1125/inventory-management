@@ -23,7 +23,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex justify-between bg-background items-center w-full mb-7">
+    <div className="sticky top-0 z-50 flex justify-between bg-background/80 backdrop-blur-md  items-center w-full mb-7 py-4">
       {/* left side in navbar */}
       <div className="flex justify-between items-center gap-5">
         <button
