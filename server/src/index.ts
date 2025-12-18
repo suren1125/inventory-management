@@ -9,6 +9,7 @@ import morgan from "morgan";
 import dashboardRoutes from "./routes/dashboardRoutes.ts";
 import productRoutes from "./routes/productRoutes.ts";
 import userRoutes from "./routes/userRoutes.ts";
+import expenseRoutes from "./routes/expenseRoutes.ts";
 
 /* configurations */
 const app = express();
@@ -24,12 +25,10 @@ app.use(cors());
 app.use("/dashboard", dashboardRoutes);
 app.use("/products", productRoutes);
 app.use("/users", userRoutes);
+app.use("/expenses", expenseRoutes);
 
 /* server */
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log(`Server is running at port ${port}`);
-  console.log(
-    `DATABASE_URL loaded: ${process.env.DATABASE_URL ? "Yes" : "No"}`
-  ); // Verify it's loaded
 });
