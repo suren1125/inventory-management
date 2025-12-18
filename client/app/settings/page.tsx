@@ -48,6 +48,7 @@ const Settings = () => {
                   {setting.type === "toggle" ? (
                     <label className="inline-flex relative items-center cursor-pointer">
                       <input
+                        title={setting.type}
                         type="checkbox"
                         className="sr-only peer"
                         checked={setting.value as boolean}
@@ -63,6 +64,7 @@ const Settings = () => {
                     </label>
                   ) : (
                     <input
+                      title={setting.label}
                       type="text"
                       className="px-4 py-2 border rounded-lg text-gray-500 focus:outline-none focus:border-blue-500"
                       value={setting.value as string}
