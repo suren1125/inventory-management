@@ -38,30 +38,30 @@ const CardSalesSummary = () => {
     : "N/A";
 
   if (isError) {
-    return <div className="m-5">Failed to fetch data</div>;
+    return <div className="m-5 text-foreground">Failed to fetch data</div>;
   }
 
   return (
-    <div className="row-span-3 xl:row-span-6 bg-white shadow-md rounded-2xl flex flex-col justify-between overflow-y-auto">
+    <div className="row-span-3 xl:row-span-6 bg-surface shadow-md rounded-2xl flex flex-col justify-between transition-colors duration-300 overflow-auto">
       {isLoading ? (
-        <div className="m-5">Loading...</div>
+        <div className="m-5 text-foreground">Loading...</div>
       ) : (
         <>
           {/* header */}
           <div>
-            <h2 className="text-lg font-semibold mb-2 px-7 pt-5">
+            <h2 className="text-lg font-semibold mb-2 px-7 pt-5 text-foreground">
               Sales Summary
             </h2>
-            <hr />
+            <hr className="border-border-main" />
           </div>
 
           {/* body */}
-          <div>
+          <div className="overflow-y-auto h-full">
             {/* body header */}
             <div className="flex justify-between items-center mb-6 px-7 mt-5">
               <div className="text-lg font-medium">
                 <p className="text-xs text-gray-400">Value</p>
-                <span className="text-2xl font-extrabold">
+                <span className="text-2xl font-extrabold text-foreground">
                   $
                   {(totalValueSum / 1000000).toLocaleString("en", {
                     maximumFractionDigits: 2,
@@ -75,7 +75,7 @@ const CardSalesSummary = () => {
               </div>
               <select
                 title="timeframe"
-                className="shadow-sm border border-gray-300 bg-white p-2 rounded"
+                className="shadow-sm border border-border-main bg-surface text-foreground p-2 rounded focus:outline-none"
                 value={timeframe}
                 onChange={(e) => {
                   setTimeframe(e.target.value);
@@ -86,25 +86,34 @@ const CardSalesSummary = () => {
                 <option value="monthly">Monthly</option>
               </select>
             </div>
+
             {/* chart */}
             <ResponsiveContainer width="100%" height={350} className="px-7">
               <BarChart
                 data={salesData}
                 margin={{ top: 0, right: 10, left: -50, bottom: 45 }}
               >
-                <CartesianGrid strokeDasharray="" vertical={false} />
+                <CartesianGrid
+                  strokeDasharray=""
+                  vertical={false}
+                  stroke="var(--border-main)"
+                />
                 <XAxis
                   dataKey="date"
                   tickFormatter={(value) => {
                     const date = new Date(value);
                     return `${date.getMonth() + 1}/${date.getDate()}`;
                   }}
+                  stroke="var(--foreground)"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
                 />
                 <YAxis
                   tickFormatter={(value) => {
                     return `$${(value / 1000000).toFixed(0)}m`;
                   }}
-                  tick={{ fontSize: 12, dx: -1 }}
+                  tick={{ fontSize: 12, dx: -1, fill: "var(--foreground)" }}
                   tickLine={false}
                   axisLine={false}
                 />
@@ -120,6 +129,11 @@ const CardSalesSummary = () => {
                       day: "numeric",
                     });
                   }}
+                  contentStyle={{
+                    backgroundColor: "var(--surface)",
+                    color: "var(--foreground)",
+                    borderColor: "var(--border-main)",
+                  }}
                 />
                 <Bar
                   dataKey="totalValue"
@@ -133,8 +147,8 @@ const CardSalesSummary = () => {
 
           {/* footer */}
           <div>
-            <hr />
-            <div className="flex justify-between items-center mt-6 text-sm px-7 mb-4">
+            <hr className="border-border-main" />
+            <div className="flex justify-between items-center mt-6 text-sm px-7 mb-4 text-foreground">
               <p>{salesData.length || 0} days</p>
               <p className="text-sm">
                 Highest Sales Date:{" "}

@@ -3,22 +3,29 @@
 
 :root {
   @apply text-sm;
-  --background: #f5f5f5;
-  --foreground: #171717;
+  /* Light Mode Palette */
+  --background: #f3f4f6; /* Soft gray-100 background */
+  --foreground: #111827; /* Rich gray-900 text */
+  --surface: #ffffff; /* Pure white for cards/panels */
+  --border-color: #e5e7eb; /* gray-200 */
 
   @variant dark {
-    --background: #111111;
-    --foreground: #f5f5f5;
+    /* Dark Mode Palette */
+    --background: #0f172a; /* Deep slate-950 for main background */
+    --foreground: #f1f5f9; /* Slate-100 for high-contrast text */
+    --surface: #1e293b; /* Slate-800 for cards/panels (lighter than background) */
+    --border-color: #334155; /* Slate-700 */
   }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-border-main: var(--border-color);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
-
 @utility custom-grid-rows {
   @media (min-width: 768px) {
     grid-template-rows: repeat(8, 20vh);
@@ -30,7 +37,7 @@
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }

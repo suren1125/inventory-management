@@ -20,13 +20,13 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       document.documentElement.classList.add("light");
       document.documentElement.classList.remove("dark");
     }
-  });
+  }, [isDarkMode]);
 
   return (
-    <div className={`flex bg-background text-foreground w-full min-h-screen`}>
+    <div className="flex bg-background text-foreground w-full min-h-screen transition-colors duration-300">
       <Sidebar />
       <main
-        className={`flex flex-col w-full h-full py-7 px-9 transition-colors duration-300 ${
+        className={`flex flex-col w-full h-full py-7 px-9 bg-background transition-all duration-300 ${
           isSidebarCollapsed ? "md:pl-24" : "md:pl-72"
         }`}
       >

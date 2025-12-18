@@ -6,7 +6,6 @@ import {
   Archive,
   CircleDollarSign,
   Clipboard,
-  Icon,
   Layout,
   LucideIcon,
   Menu,
@@ -37,18 +36,21 @@ const SidebarLink = ({
   return (
     <Link href={href}>
       <div
-        className={`cursor-pointer flex items-center ${
+        className={`cursor-pointer flex items-center transition-colors duration-200 ${
           isCollapsed ? "justify-center py-4" : "justify-start px-8 py-4"
-        } hover:text-blue-500 hover:bg-blue-100 gap-3 transition-colors ${
-          isActive ? "bg-blue-200 text-white" : ""
-        }`}
+        } 
+        hover:text-blue-500 hover:bg-blue-100 dark:hover:bg-blue-900/30 gap-3 
+        ${isActive ? "bg-blue-500! text-white!" : "text-foreground"} 
+        `}
       >
-        <Icon className="size-6 text-gray-700!" />
+        <Icon
+          className={`size-6 ${isActive ? "text-white" : "text-foreground"}`}
+        />
 
         <span
-          className={`${
-            isCollapsed ? "hidden" : "block"
-          } font-medium text-gray-700`}
+          className={`${isCollapsed ? "hidden" : "block"} font-medium ${
+            isActive ? "text-white" : "text-foreground"
+          }`}
         >
           {label}
         </span>
@@ -67,20 +69,21 @@ const Sidebar = () => {
     dispatch(setIsSidebarCollapsed(!isSidebarCollapsed));
   };
 
-  const sidebarClassNames = `fixed bg-background flex flex-col transition-all duration-300 overflow-hidden h-full shadow-md z-40 ${
+  const sidebarClassNames = `fixed bg-surface flex flex-col transition-all duration-300 overflow-hidden h-full shadow-md z-50 border-r border-border-main ${
     isSidebarCollapsed ? "w-0 md:w-16" : "w-72 md:w-64"
   }`;
 
   return (
     <div className={sidebarClassNames}>
+      {/* logo */}
       <div
         className={`flex gap-3 justify-between md:justify-normal items-center pt-8 ${
           isSidebarCollapsed ? "px-5" : "px-8"
         }`}
       >
-        <div>logo</div>
+        <div className="text-blue-600">logo</div>
         <h1
-          className={`font-extrabold text-2xl ${
+          className={`font-extrabold text-2xl text-foreground ${
             isSidebarCollapsed ? "hidden" : "block"
           }`}
         >
@@ -88,10 +91,10 @@ const Sidebar = () => {
         </h1>
         <button
           title="menu-btn"
-          className="md:hidden px-3 py-3 bg-gray-100 rounded-full hover:bg-blue-100"
+          className="md:hidden px-3 py-3 bg-background rounded-full hover:bg-blue-100 dark:hover:bg-blue-900/40"
           onClick={toggleSidebar}
         >
-          <Menu className="size-4" />
+          <Menu className="size-4 text-foreground" />
         </button>
       </div>
 
@@ -137,7 +140,7 @@ const Sidebar = () => {
 
       {/* footer */}
       <div className={`${isSidebarCollapsed ? "hidden" : "block"} mb-10`}>
-        <p className="text-center text-xs text-gray-500 ">
+        <p className="text-center text-xs text-gray-500">
           &copy; 2025 SaintStock
         </p>
       </div>
