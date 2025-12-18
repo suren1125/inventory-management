@@ -14,8 +14,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
-
+import Image from "next/image";
 interface SidebarLinkProps {
   href: string;
   icon: LucideIcon;
@@ -81,7 +80,8 @@ const Sidebar = () => {
           isSidebarCollapsed ? "px-5" : "px-8"
         }`}
       >
-        <div className="text-blue-600">logo</div>
+        <Image src="/surenlogo.png" alt="logo" width={50} height={50} />
+
         <h1
           className={`font-extrabold text-2xl text-foreground ${
             isSidebarCollapsed ? "hidden" : "block"

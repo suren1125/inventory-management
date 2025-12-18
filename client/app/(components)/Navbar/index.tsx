@@ -3,6 +3,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/redux";
 import { setIsSidebarCollapsed, setIsDarkMode } from "@/state";
 import { Bell, Menu, Moon, Settings, Sun } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -52,7 +53,7 @@ const Navbar = () => {
         <div className="hidden md:flex justify-between items-center gap-5">
           <div className="flex items-center gap-3 cursor-pointer group">
             <div className="size-9 bg-surface rounded-full flex items-center justify-center text-xs text-foreground border border-border-main">
-              IMG
+              <Image src="/surenlogo.png" alt="logo" width={50} height={50} />
             </div>
             <span className="font-semibold text-foreground group-hover:text-blue-500 transition-colors">
               Suren
