@@ -38,9 +38,9 @@ const Expenses = () => {
   } = useGetExpensesByCategoryQuery();
 
   const classNames = {
-    label: "block text-sm font-medium text-gray-700",
+    label: "block text-sm font-medium text-foreground",
     selectInput:
-      "mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md",
+      "mt-1 block w-full pl-3 pr-10 py-2 text-base border-border-main bg-background text-foreground focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md transition-colors",
   };
 
   const expenses = useMemo(() => expensesData ?? [], [expensesData]);
@@ -50,13 +50,12 @@ const Expenses = () => {
     return date.toISOString().split("T")[0];
   };
 
-  // A simple helper to turn a string into a stable color
   const stringToColor = (str: string) => {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
       hash = str.charCodeAt(i) + ((hash << 5) - hash);
     }
-    return `hsl(${Math.abs(hash) % 360}, 70%, 50%)`; // Stable HSL color
+    return `hsl(${Math.abs(hash) % 360}, 70%, 50%)`;
   };
 
   const aggregatedData: AggregatedDataItem[] = useMemo(() => {
@@ -77,7 +76,7 @@ const Expenses = () => {
           acc[data.category] = {
             name: data.category,
             amount: 0,
-            color: stringToColor(data.category), // Stable based on name
+            color: stringToColor(data.category),
           };
         }
         acc[data.category].amount += amount;
@@ -87,7 +86,7 @@ const Expenses = () => {
   }, [expenses, selectedCategory, startDate, endDate]);
 
   if (isLoading) {
-    return <div className="py-4">Loading...</div>;
+    return <div className="py-4 text-foreground">Loading...</div>;
   }
 
   if (isError || !expensesData) {
@@ -99,7 +98,7 @@ const Expenses = () => {
   }
 
   return (
-    <div>
+    <div className="transition-colors duration-300">
       <div className="mb-5">
         <Header name="Expenses" />
         <p className="text-sm text-gray-500">
@@ -109,8 +108,8 @@ const Expenses = () => {
 
       {/* filters */}
       <div className="flex flex-col md:flex-row justify-between gap-4">
-        <div className="w-full md:w-1/3 bg-white shadow rounded-lg p-6">
-          <h3 className="text-lg font-semibold mb-4">
+        <div className="w-full md:w-1/3 bg-surface shadow rounded-lg p-6 border border-border-main">
+          <h3 className="text-lg font-semibold mb-4 text-foreground">
             Filter by Category and Date
           </h3>
           <div className="space-y-4">
@@ -132,7 +131,6 @@ const Expenses = () => {
               </select>
             </div>
 
-            {/* start date */}
             <div>
               <label htmlFor="start-date" className={classNames.label}>
                 Start Date
@@ -146,7 +144,6 @@ const Expenses = () => {
               />
             </div>
 
-            {/* end date */}
             <div>
               <label htmlFor="end-date" className={classNames.label}>
                 End Date
@@ -162,15 +159,14 @@ const Expenses = () => {
           </div>
         </div>
 
-        {/* pie chart */}
-        <div className="grow bg-white shadow rounded-lg p-4 md:p-6">
+        {/* pie chart container */}
+        <div className="grow bg-surface shadow rounded-lg p-4 md:p-6 border border-border-main">
           <ResponsiveContainer width="100%" height={400}>
             <PieChart>
               <Pie
                 data={aggregatedData}
                 cx="50%"
                 cy="50%"
-                label
                 outerRadius={150}
                 fill="#8884d8"
                 dataKey="amount"
@@ -181,14 +177,24 @@ const Expenses = () => {
                     <Cell
                       key={`cell-${index}`}
                       fill={
-                        index === activeIndex ? "rgb(29,78, 216)" : entry.color
+                        index === activeIndex
+                          ? "rgb(59, 130, 246)"
+                          : entry.color
                       }
+                      stroke="var(--surface)"
+                      strokeWidth={2}
                     />
                   )
                 )}
               </Pie>
-              <Tooltip />
-              <Legend />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "var(--surface)",
+                  color: "var(--foreground)",
+                  borderColor: "var(--border-main)",
+                }}
+              />
+              <Legend wrapperStyle={{ paddingTop: "20px" }} />
             </PieChart>
           </ResponsiveContainer>
         </div>

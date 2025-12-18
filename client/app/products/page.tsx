@@ -30,7 +30,7 @@ const Products = () => {
   };
 
   if (isLoading) {
-    return <div className="py-4">Loading...</div>;
+    return <div className="py-4 text-foreground">Loading...</div>;
   }
 
   if (isError || !products) {
@@ -42,13 +42,13 @@ const Products = () => {
   }
 
   return (
-    <div className="mx-auto pb-5 w-full">
+    <div className="mx-auto pb-5 w-full transition-colors duration-300">
       {/* search bar */}
       <div className="mb-5">
-        <div className="flex items-center border-2 border-gray-200 rounded">
+        <div className="flex items-center border-2 border-border-main rounded bg-surface">
           <SearchIcon className="size-5 text-gray-500 m-2" />
           <input
-            className="w-full py-2 px-4 rounded bg-white"
+            className="w-full py-2 px-4 rounded bg-surface text-foreground focus:outline-none"
             placeholder="Search products..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -60,42 +60,44 @@ const Products = () => {
       <div className="flex justify-between items-center mb-6 ">
         <Header name="Products" />
         <button
-          className="flex items-center bg-blue-500 hover:bg-blue-700 text-gray-200 font-bold py-2 px-4 rounded"
+          className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors"
           onClick={() => setIsModalOpen(true)}
         >
-          <PlusCircleIcon className="size-5 mr-2 text-gray-200!" />
+          <PlusCircleIcon className="size-5 mr-2" />
           Create Product
         </button>
       </div>
 
       {/* body products list */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 justify-between">
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : (
-          products?.map((product) => (
-            <div
-              key={product.productId}
-              className=" shadow rounded-md p-4 max-w-full w-full mx-auto"
-            >
-              <div className="flex flex-col items-center">
-                img
-                <h3 className="text-lg text-gray-900 font-semibold">
-                  {product.name}
-                </h3>
-                <p className="text-gray-800">${product.price.toFixed(2)}</p>
-                <div className="text-sm text-gray-600 mt-1">
-                  Stock: {product.stockQuantity}{" "}
-                </div>
-                {product.rating && (
-                  <div className="flex items-center mt-2">
-                    <Rating rating={product.rating} />{" "}
-                  </div>
-                )}
+        {products?.map((product) => (
+          <div
+            key={product.productId}
+            className="bg-surface shadow rounded-md p-4 max-w-full w-full mx-auto border border-border-main transition-colors duration-300"
+          >
+            <div className="flex flex-col items-center">
+              {/* image placeholder */}
+              <div className="w-32 h-32 bg-background rounded-lg mb-4 flex items-center justify-center text-gray-400 border border-border-main">
+                Image
               </div>
+
+              <h3 className="text-lg text-foreground font-semibold">
+                {product.name}
+              </h3>
+              <p className="text-foreground opacity-80">
+                ${product.price.toFixed(2)}
+              </p>
+              <div className="text-sm text-gray-500 mt-1">
+                Stock: {product.stockQuantity}
+              </div>
+              {product.rating && (
+                <div className="flex items-center mt-2">
+                  <Rating rating={product.rating} />
+                </div>
+              )}
             </div>
-          ))
-        )}
+          </div>
+        ))}
       </div>
 
       {/* create modal */}
