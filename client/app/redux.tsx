@@ -1,4 +1,6 @@
-import { useRef } from "react";
+"use client";
+
+import { useEffect } from "react";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
   TypedUseSelectorHook,
@@ -24,19 +26,17 @@ import { PersistGate } from "redux-persist/integration/react";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 
 /* REDUX PERSISTENCE */
-const createNoopStorage = () => {
-  return {
-    getItem(_key: any) {
-      return Promise.resolve(null);
-    },
-    setItem(_key: any, value: any) {
-      return Promise.resolve(value);
-    },
-    removeItem(_key: any) {
-      return Promise.resolve();
-    },
-  };
-};
+const createNoopStorage = () => ({
+  getItem() {
+    return Promise.resolve(null);
+  },
+  setItem(_key: string, value: string) {
+    return Promise.resolve(value);
+  },
+  removeItem() {
+    return Promise.resolve();
+  },
+});
 
 const storage =
   typeof window === "undefined"
@@ -48,29 +48,30 @@ const persistConfig = {
   storage,
   whitelist: ["global"],
 };
+
 const rootReducer = combineReducers({
   global: globalReducer,
   [api.reducerPath]: api.reducer,
 });
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-/* REDUX STORE */
-export const makeStore = () => {
-  return configureStore({
-    reducer: persistedReducer,
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({
-        serializableCheck: {
-          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        },
-      }).concat(api.middleware),
-  });
-};
+/* STORE (MODULE SCOPE) */
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(api.middleware),
+});
 
-/* REDUX TYPES */
-export type AppStore = ReturnType<typeof makeStore>;
-export type RootState = ReturnType<AppStore["getState"]>;
-export type AppDispatch = AppStore["dispatch"];
+export const persistor = persistStore(store);
+
+/* TYPES */
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
@@ -80,15 +81,12 @@ export default function StoreProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const storeRef = useRef<AppStore>();
-  if (!storeRef.current) {
-    storeRef.current = makeStore();
-    setupListeners(storeRef.current.dispatch);
-  }
-  const persistor = persistStore(storeRef.current);
+  useEffect(() => {
+    setupListeners(store.dispatch);
+  }, []);
 
   return (
-    <Provider store={storeRef.current}>
+    <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         {children}
       </PersistGate>
