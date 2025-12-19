@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { type ExpenseByCategory } from "@prisma/client";
-import { prisma } from "../prisma.ts";
+import { prisma } from "../prisma.js";
 
 export const getDashboardMetrics = async (
   req: Request,

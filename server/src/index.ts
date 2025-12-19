@@ -1,25 +1,22 @@
-import "dotenv/config"; // must be first
-import express from "express";
+import "dotenv/config"; // MUST be the FIRST import before anything else
+import express, { application } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import morgan from "morgan";
 import helmet from "helmet";
+import morgan from "morgan";
 
 /* route imports */
-import dashboardRoutes from "./routes/dashboardRoutes.ts";
-import productRoutes from "./routes/productRoutes.ts";
-import userRoutes from "./routes/userRoutes.ts";
-import expenseRoutes from "./routes/expenseRoutes.ts";
+import dashboardRoutes from "./routes/dashboardRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import expenseRoutes from "./routes/expenseRoutes.js";
 
 /* configurations */
 const app = express();
-
 app.use(express.json());
-app.use(
-  helmet({
-    crossOriginResourcePolicy: { policy: "cross-origin" },
-  })
-);
+app.use((helmet as any)());
+app.use((helmet as any).crossOriginResourcePolicy({ policy: "cross-origin" }));
+
 app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
