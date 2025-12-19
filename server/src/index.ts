@@ -2,7 +2,6 @@ import "dotenv/config"; // MUST be the FIRST import before anything else
 import express, { application } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import helmet from "helmet";
 import morgan from "morgan";
 
 /* route imports */
@@ -10,6 +9,8 @@ import dashboardRoutes from "./routes/dashboardRoutes.ts";
 import productRoutes from "./routes/productRoutes.ts";
 import userRoutes from "./routes/userRoutes.ts";
 import expenseRoutes from "./routes/expenseRoutes.ts";
+
+const helmet = (await import("helmet")).default;
 
 /* configurations */
 const app = express();
